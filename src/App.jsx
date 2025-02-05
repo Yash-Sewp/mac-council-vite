@@ -75,13 +75,17 @@ function App() {
     // Start M animation at 0 degrees
     let mEndRotation = playAnimation(mAnimationInstance, 'mPercentage', 0);
 
-    // Start C animation where M animation ends
-    let cEndRotation = playAnimation(cAnimationInstance, 'cPercentage', mEndRotation);
-    setCStartRotation(mEndRotation);
+    // Add event listener to start C animation when M animation completes
+    mAnimationInstance.addEventListener('complete', () => {
+      let cEndRotation = playAnimation(cAnimationInstance, 'cPercentage', mEndRotation);
+      setCStartRotation(mEndRotation);
 
-    // Start A animation where C animation ends
-    let aEndRotation = playAnimation(aAnimationInstance, 'aPercentage', cEndRotation);
-    setAStartRotation(cEndRotation);
+      // Add event listener to start A animation when C animation completes
+      cAnimationInstance.addEventListener('complete', () => {
+        let aEndRotation = playAnimation(aAnimationInstance, 'aPercentage', cEndRotation);
+        setAStartRotation(cEndRotation);
+      });
+    });
   };
 
   return (
@@ -109,23 +113,23 @@ function App() {
 
             <div className="flex">
               <div className="flex">
-                <div className="text-white p-2">Date Field A:</div>
-                <input type="number" className="text-white border border-white p-2 mb-4" id="aPercentage" placeholder="Enter percentage for A Animation" />
-              </div>
-              <div className="flex">
-                <div className="text-white p-2">Label</div>
-                <input type="text" className="text-white border border-white p-2 mb-4" id="aLabel" placeholder="R500 to 1000k" />
-              </div>
-            </div>
-
-            <div className="flex">
-              <div className="flex">
                 <div className="text-white p-2">Date Field C:</div>
                 <input type="number" className="text-white border border-white p-2 mb-4" id="cPercentage" placeholder="Enter percentage for C Animation" />
               </div>
               <div className="flex">
                 <div className="text-white p-2">Label</div>
                 <input type="text" className="text-white border border-white p-2 mb-4" id="cLabel" placeholder="R10000k+" />
+              </div>
+            </div>
+
+            <div className="flex">
+              <div className="flex">
+                <div className="text-white p-2">Date Field A:</div>
+                <input type="number" className="text-white border border-white p-2 mb-4" id="aPercentage" placeholder="Enter percentage for A Animation" />
+              </div>
+              <div className="flex">
+                <div className="text-white p-2">Label</div>
+                <input type="text" className="text-white border border-white p-2 mb-4" id="aLabel" placeholder="R500 to 1000k" />
               </div>
             </div>
 
