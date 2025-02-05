@@ -16,6 +16,13 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  const [mPercentage, setMPercentage] = useState(0);
+  const [mLabel, setMLabel] = useState("");
+  const [cPercentage, setCPercentage] = useState(0);
+  const [cLabel, setCLabel] = useState("");
+  const [aPercentage, setAPercentage] = useState(0);
+  const [aLabel, setALabel] = useState("");
+
   let mAnimationInstance = null;
   let aAnimationInstance = null;
   let cAnimationInstance = null;
@@ -107,8 +114,11 @@ function App() {
           </div>
           {/* <img src={logo} alt="Logo" /> */}
 
-          <hr className="w-25 mt-4 mb-4" />
+          <hr className="mt-4 mb-4" />
           <h2 className="text-2xl">{title}</h2>
+
+          <p>{mPercentage}%: {mLabel}</p>
+          <p>{cPercentage}%: {cLabel}</p>
           
           <p>{description}</p>
         </div>
