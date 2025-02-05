@@ -19,7 +19,7 @@ function App() {
         renderer: 'svg',
         loop: false,
         autoplay: false,
-        animationData: mAnimation,
+        animationData: mAnimation
       });
 
       aAnimationInstance = lottie.loadAnimation({
@@ -57,18 +57,9 @@ function App() {
   const playAnimations = () => {
     const playAnimation = (animationInstance, inputId) => {
       let percentage = parseFloat(document.getElementById(inputId).value);
-
-      if (isNaN(percentage) || percentage < 0) percentage = 0;
-      if (percentage > 100) percentage = 100;
-
-      let minFrame = 20;
-      let maxFrame = 50;
-      let targetFrame = minFrame + (percentage / 100) * (maxFrame - minFrame);
-      targetFrame = Math.max(minFrame, Math.min(targetFrame, maxFrame));
-
-      if (animationInstance) {
+      if (animationInstance && percentage) {
         animationInstance.goToAndPlay(0, true);
-        animationInstance.playSegments([0, Math.round(targetFrame)], true);
+        animationInstance.playSegments([0, percentage], true);
       }
     };
 
@@ -79,18 +70,52 @@ function App() {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="flex items-center relative" style={{ width: 400, height: 400 }}>
-          <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 400, height: 400 }}></div>
-          <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: 'rotate(-116deg)' }}></div>
-          <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: 'rotate(125deg)' }}></div>
+      <div className="flex items-center justify-center min-h-screen w-full bg-black">
+        <div className="flex w-1/2 justify-center">
+          <div className="flex items-center relative" style={{ width: 400, height: 400 }}>
+            <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 400, height: 400 }}></div>
+            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: 'rotate(-116deg)' }}></div>
+            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: 'rotate(-246deg)' }}></div>
+          </div>
         </div>
-        <div className="flex flex-col items-center">
-          <input type="number" className="text-black border border-black p-2 mb-4" id="mPercentage" placeholder="Enter percentage for mAnimation" />
-          <input type="number" className="text-black border border-black p-2 mb-4" id="aPercentage" placeholder="Enter percentage for aAnimation" />
-          <input type="number" className="text-black border border-black p-2 mb-4" id="cPercentage" placeholder="Enter percentage for cAnimation" />
+        <div className="flex w-1/2 justify-center">
+          <div className="flex flex-col items-center">
+            <div className="flex">
+              <div className="flex">
+                <div className="text-white p-2">Date Field 1:</div>
+                <input type="number" className="text-white border border-white p-2 mb-4" id="mPercentage" placeholder="Enter percentage for M Animation" />
+              </div>
+              <div className="flex">
+                <div className="text-white p-2">Label</div>
+                <input type="text" className="text-white border border-white p-2 mb-4" id="mLabel" placeholder="R100 to 400k" />
+              </div>
+            </div>
 
-          <button className="bg-blue-500 text-white p-2 rounded" onClick={playAnimations}>Play Animations</button>
+            <div className="flex">
+              <div className="flex">
+                <div className="text-white p-2">Date Field 2:</div>
+                <input type="number" className="text-white border border-white p-2 mb-4" id="aPercentage" placeholder="Enter percentage for A Animation" />
+              </div>
+              <div className="flex">
+                <div className="text-white p-2">Label</div>
+                <input type="text" className="text-white border border-white p-2 mb-4" id="aLabel" placeholder="R500 to 1000k" />
+              </div>
+            </div>
+
+            <div className="flex">
+              <div className="flex">
+                <div className="text-white p-2">Date Field 3:</div>
+                <input type="number" className="text-white border border-white p-2 mb-4" id="cPercentage" placeholder="Enter percentage for C Animation" />
+              </div>
+              <div className="flex">
+                <div className="text-white p-2">Label</div>
+                <input type="text" className="text-white border border-white p-2 mb-4" id="cLabel" placeholder="R10000k+" />
+              </div>
+            </div>
+
+            
+            <button className="text-white p-2 rounded" onClick={playAnimations}>Play Animations</button>
+          </div>
         </div>
       </div>
     </>
