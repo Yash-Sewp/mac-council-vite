@@ -8,6 +8,7 @@ function App() {
   const mAnimationContainer = useRef(null);
   const aAnimationContainer = useRef(null);
   const cAnimationContainer = useRef(null);
+
   let mAnimationInstance = null;
   let aAnimationInstance = null;
   let cAnimationInstance = null;
@@ -16,29 +17,39 @@ function App() {
     try {
       mAnimationInstance = lottie.loadAnimation({
         container: mAnimationContainer.current,
-        renderer: 'svg',
+        renderer: "svg",
         loop: false,
         autoplay: false,
-        animationData: mAnimation
+        animationData: mAnimation,
+      });
+
+      cAnimationInstance = lottie.loadAnimation({
+        container: cAnimationContainer.current,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        animationData: cAnimation,
       });
 
       aAnimationInstance = lottie.loadAnimation({
         container: aAnimationContainer.current,
-        renderer: 'svg',
+        renderer: "svg",
         loop: false,
         autoplay: false,
         animationData: aAnimation,
       });
 
-      cAnimationInstance = lottie.loadAnimation({
-        container: cAnimationContainer.current,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        animationData: cAnimation,
+      // Attach event listeners to play animations in sequence
+      mAnimationInstance.addEventListener("complete", () => {
+        cAnimationInstance.goToAndPlay(0, true);
       });
+
+      cAnimationInstance.addEventListener("complete", () => {
+        aAnimationInstance.goToAndPlay(0, true);
+      });
+
     } catch (error) {
-      console.error('Error parsing Lottie JSON:', error);
+      console.error("Error parsing Lottie JSON:", error);
     }
 
     return () => {
@@ -54,18 +65,26 @@ function App() {
     };
   }, []);
 
+  // Function to start sequential animations
   const playAnimations = () => {
     const playAnimation = (animationInstance, inputId) => {
-      let percentage = parseFloat(document.getElementById(inputId).value);
+      const percentage = parseFloat(document.getElementById(inputId).value);
       if (animationInstance && percentage) {
         animationInstance.goToAndPlay(0, true);
         animationInstance.playSegments([0, percentage], true);
       }
     };
 
+    // Start M animation
     playAnimation(mAnimationInstance, 'mPercentage');
-    playAnimation(aAnimationInstance, 'aPercentage');
-    playAnimation(cAnimationInstance, 'cPercentage');
+
+    // Trigger subsequent animations in sequence
+    mAnimationInstance.addEventListener('complete', () => {
+      playAnimation(cAnimationInstance, 'cPercentage');
+      cAnimationInstance.addEventListener('complete', () => {
+        playAnimation(aAnimationInstance, 'aPercentage');
+      });
+    });
   };
 
   return (
@@ -74,8 +93,8 @@ function App() {
         <div className="flex w-1/2 justify-center">
           <div className="flex items-center relative" style={{ width: 400, height: 400 }}>
             <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 400, height: 400 }}></div>
-            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: 'rotate(-116deg)' }}></div>
-            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: 'rotate(-246deg)' }}></div>
+            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: "rotate(-116deg)" }}></div>
+            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: "rotate(-246deg)" }}></div>
           </div>
         </div>
         <div className="flex w-1/2 justify-center">
@@ -113,7 +132,6 @@ function App() {
               </div>
             </div>
 
-            
             <button className="text-white p-2 rounded" onClick={playAnimations}>Play Animations</button>
           </div>
         </div>
@@ -123,8 +141,3 @@ function App() {
 }
 
 export default App;
-
-// animate individually
-// a - first
-// c - bottom
-// a 
