@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import lottie from "lottie-web";
 import mAnimation from "./animations/m-animation.json";
 import aAnimation from "./animations/a-animation.json";
@@ -8,6 +8,9 @@ function App() {
   const mAnimationContainer = useRef(null);
   const aAnimationContainer = useRef(null);
   const cAnimationContainer = useRef(null);
+
+  const [cStartRotation, setCStartRotation] = useState(0);
+  const [aStartRotation, setAStartRotation] = useState(0);
 
   let mAnimationInstance = null;
   let aAnimationInstance = null;
@@ -38,16 +41,6 @@ function App() {
         autoplay: false,
         animationData: aAnimation,
       });
-
-      // Attach event listeners to play animations in sequence
-      mAnimationInstance.addEventListener("complete", () => {
-        cAnimationInstance.goToAndPlay(0, true);
-      });
-
-      cAnimationInstance.addEventListener("complete", () => {
-        aAnimationInstance.goToAndPlay(0, true);
-      });
-
     } catch (error) {
       console.error("Error parsing Lottie JSON:", error);
     }
@@ -67,24 +60,28 @@ function App() {
 
   // Function to start sequential animations
   const playAnimations = () => {
-    const playAnimation = (animationInstance, inputId) => {
+    const playAnimation = (animationInstance, inputId, startRotation) => {
       const percentage = parseFloat(document.getElementById(inputId).value);
-      if (animationInstance && percentage) {
+      if (animationInstance && percentage > 0) {
+        const totalDegrees = 360; // Full circle
+        const endRotation = startRotation + (percentage / 100) * totalDegrees;
         animationInstance.goToAndPlay(0, true);
         animationInstance.playSegments([0, percentage], true);
+        return endRotation;
       }
+      return startRotation;
     };
 
-    // Start M animation
-    playAnimation(mAnimationInstance, 'mPercentage');
+    // Start M animation at 0 degrees
+    let mEndRotation = playAnimation(mAnimationInstance, 'mPercentage', 0);
 
-    // Trigger subsequent animations in sequence
-    mAnimationInstance.addEventListener('complete', () => {
-      playAnimation(cAnimationInstance, 'cPercentage');
-      cAnimationInstance.addEventListener('complete', () => {
-        playAnimation(aAnimationInstance, 'aPercentage');
-      });
-    });
+    // Start C animation where M animation ends
+    let cEndRotation = playAnimation(cAnimationInstance, 'cPercentage', mEndRotation);
+    setCStartRotation(mEndRotation);
+
+    // Start A animation where C animation ends
+    let aEndRotation = playAnimation(aAnimationInstance, 'aPercentage', cEndRotation);
+    setAStartRotation(cEndRotation);
   };
 
   return (
@@ -93,15 +90,15 @@ function App() {
         <div className="flex w-1/2 justify-center">
           <div className="flex items-center relative" style={{ width: 400, height: 400 }}>
             <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 400, height: 400 }}></div>
-            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: "rotate(-116deg)" }}></div>
-            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: "rotate(-246deg)" }}></div>
+            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${cStartRotation}deg)` }}></div>
+            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${aStartRotation}deg)` }}></div>
           </div>
         </div>
         <div className="flex w-1/2 justify-center">
           <div className="flex flex-col items-center">
             <div className="flex">
               <div className="flex">
-                <div className="text-white p-2">Date Field 1:</div>
+                <div className="text-white p-2">Date Field M:</div>
                 <input type="number" className="text-white border border-white p-2 mb-4" id="mPercentage" placeholder="Enter percentage for M Animation" />
               </div>
               <div className="flex">
@@ -112,7 +109,7 @@ function App() {
 
             <div className="flex">
               <div className="flex">
-                <div className="text-white p-2">Date Field 2:</div>
+                <div className="text-white p-2">Date Field A:</div>
                 <input type="number" className="text-white border border-white p-2 mb-4" id="aPercentage" placeholder="Enter percentage for A Animation" />
               </div>
               <div className="flex">
@@ -123,7 +120,7 @@ function App() {
 
             <div className="flex">
               <div className="flex">
-                <div className="text-white p-2">Date Field 3:</div>
+                <div className="text-white p-2">Date Field C:</div>
                 <input type="number" className="text-white border border-white p-2 mb-4" id="cPercentage" placeholder="Enter percentage for C Animation" />
               </div>
               <div className="flex">
