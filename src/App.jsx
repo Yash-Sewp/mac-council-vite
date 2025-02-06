@@ -102,9 +102,13 @@ function App() {
 
     setTitle("");
     setDescription("");
-  
-    setIsSubmitDisabled(false);
-  
+    setMPercentage(0);
+    setMLabel("");
+    setCPercentage(0);
+    setCLabel("");
+    setAPercentage(0);
+    setALabel("");
+    
     // Destroy animations completely
     mAnimationInstance.current?.destroy();
     cAnimationInstance.current?.destroy();
@@ -134,6 +138,9 @@ function App() {
       autoplay: false,
       animationData: aAnimation,
     });
+
+    setIsSubmitDisabled(false);
+
   };
   
 
@@ -149,12 +156,13 @@ function App() {
           {/* <img src={logo} alt="Logo" /> */}
 
           <hr className="mt-4 mb-4" />
-          <h2 className="text-2xl">{title}</h2>
+          <h2 className="text-2xl mb-5">{title}</h2>
 
-          <p>{mPercentage}%: {mLabel}</p>
-          <p>{cPercentage}%: {cLabel}</p>
+          <p>{mPercentage}%: <span className="ms-4">{mLabel}</span></p>
+          <p>{cPercentage}%: <span className="ms-4">{cLabel}</span></p>
+          <p>{aPercentage}%: <span className="ms-4">{aLabel}</span></p>
           
-          <p>{description}</p>
+          <p className="mt-5 text-s text-gray-500">{description}</p>
         </div>
         <div className="w-1/2 p-5">
           <div className="flex flex-col w-full">
@@ -175,33 +183,47 @@ function App() {
             <div className="flex mt-5 w-full">
               <div className="flex">
                 <div className="text-white p-2">Date Field M:</div>
-                <input type="number" className="text-white border border-white p-2 mb-4" id="mPercentage" placeholder="Enter percentage for M Animation" />
+                <input
+                  type="number"
+                  className="text-white border border-white p-2 mb-4"
+                  id="mPercentage"
+                  placeholder="Enter percentage for M Animation"
+                  value={mPercentage}
+                  onChange={(e) => setMPercentage(e.target.value)}
+                />
               </div>
               <div className="flex ms-5">
                 <div className="text-white p-2">Label</div>
-                <input type="text" className="text-white border border-white p-2 mb-4" id="mLabel" placeholder="R100 to 400k" />
+                <input
+                  type="text"
+                  className="text-white border border-white p-2 mb-4"
+                  id="mLabel"
+                  placeholder="R100 to 400k"
+                  value={mLabel}
+                  onChange={(e) => setMLabel(e.target.value)}
+                />
               </div>
             </div>
 
             <div className="flex mt-5">
               <div className="flex">
                 <div className="text-white p-2">Date Field C:</div>
-                <input type="number" className="text-white border border-white p-2 mb-4" id="cPercentage" placeholder="Enter percentage for C Animation" />
+                <input type="number" className="text-white border border-white p-2 mb-4" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
               </div>
               <div className="flex ms-5">
                 <div className="text-white p-2">Label</div>
-                <input type="text" className="text-white border border-white p-2 mb-4" id="cLabel" placeholder="R10000k+" />
+                <input type="text" className="text-white border border-white p-2 mb-4" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
               </div>
             </div>
 
             <div className="flex mt-5">
               <div className="flex">
                 <div className="text-white p-2">Date Field A:</div>
-                <input type="number" className="text-white border border-white p-2 mb-4" id="aPercentage" placeholder="Enter percentage for A Animation" />
+                <input type="number" className="text-white border border-white p-2 mb-4" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
               </div>
               <div className="flex ms-5">
                 <div className="text-white p-2">Label</div>
-                <input type="text" className="text-white border border-white p-2 mb-4" id="aLabel" placeholder="R500 to 1000k" />
+                <input type="text" className="text-white border border-white p-2 mb-4" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
               </div>
             </div>
 
