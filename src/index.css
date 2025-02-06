@@ -71,3 +71,14 @@ button:disabled {
     background-color: #f9f9f9;
   }
 }
+
+.logo {
+  width: 300px;
+}
+
+.content-wrapper {
+  @media (min-width: 1024px) {
+    margin-left: 200px;
+    min-height: 310px;
+  }
+}

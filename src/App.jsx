@@ -146,23 +146,30 @@ function App() {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen w-full bg-black">
+      <div className="flex items-end justify-center min-h-screen w-full bg-black">
         <div className="w-1/3 p-5">
-          <div className="flex items-center relative" style={{ width: 400, height: 400 }}>
-            <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 400, height: 400 }}></div>
-            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${cStartRotation}deg)` }}></div>
-            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${aStartRotation}deg)` }}></div>
+          <div className="flex items-center relative" style={{ width: 350, height: 350 }}>
+            <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 350, height: 350 }}></div>
+            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 350, height: 350, transform: `rotate(-${cStartRotation}deg)` }}></div>
+            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 350, height: 350, transform: `rotate(-${aStartRotation}deg)` }}></div>
           </div>
-          {/* <img src={logo} alt="Logo" /> */}
 
-          <hr className="mt-4 mb-4" />
-          <h2 className="text-2xl mb-5">{title}</h2>
+          <div className="flex flex-col w-full">
+            <div className="content-wrapper flex flex-col w-1/2">
+             <img src={logo} className="logo mb-3" alt="Logo" />
 
-          <p>{mPercentage}%: <span className="ms-4">{mLabel}</span></p>
-          <p>{cPercentage}%: <span className="ms-4">{cLabel}</span></p>
-          <p>{aPercentage}%: <span className="ms-4">{aLabel}</span></p>
+              <hr className="mt-3 mb-3" />
+
+              {title && <h2 className="text-2xl mb-2">{title}</h2>}
+
+              {mPercentage > 0 && <p>{mPercentage}%: <span className="ms-4">{mLabel}</span></p>}
+              {cPercentage > 0 && <p>{cPercentage}%: <span className="ms-4">{cLabel}</span></p>}
+              {aPercentage > 0 && <p>{aPercentage}%: <span className="ms-4">{aLabel}</span></p>}
+
+              {description && <p className="mt-2 text-s text-gray-500">{description}</p>}
+            </div>
           
-          <p className="mt-5 text-s text-gray-500">{description}</p>
+          </div>
         </div>
         <div className="w-1/2 p-5">
           <div className="flex flex-col w-full">
