@@ -215,9 +215,9 @@ function App() {
               ></textarea>
             </div>
 
-            <div className="flex w-full justify-start mt-5">
-              <button className="text-white p-2 rounded mt-5 w-75" onClick={playAnimations}  disabled={isSubmitDisabled}>Submit</button>
-              <button className="text-white p-2 rounded mt-5 w-75 ms-3" onClick={resetForm}>Reset</button>
+            <div className="flex w-full justify-center mt-5">
+              <button className="bg-white text-black p-2 mt-5" onClick={playAnimations}  disabled={isSubmitDisabled}>Submit</button>
+              <button className="bg-white text-black p-2 mt-5 ms-3" onClick={resetForm}>Reset</button>
             </div>
  
           </div>
