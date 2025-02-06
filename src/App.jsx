@@ -17,6 +17,7 @@ function App() {
   const [description, setDescription] = useState("");
 
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [mPercentage, setMPercentage] = useState(0);
   const [mLabel, setMLabel] = useState("");
@@ -65,7 +66,26 @@ function App() {
     };
   }, []);
 
+  const validatePercentages = () => {
+    const m = parseFloat(mPercentage) || 0;
+    const c = parseFloat(cPercentage) || 0;
+    const a = parseFloat(aPercentage) || 0;
+    const total = m + c + a;
+
+    if (total > 100) {
+      setErrorMessage("Total percentage cannot exceed 100%");
+      setIsSubmitDisabled(true);
+      return false;
+    } else {
+      setErrorMessage("");
+      setIsSubmitDisabled(false);
+      return true;
+    }
+  };
+
   const playAnimations = () => {
+    if (!validatePercentages()) return; 
+
     setIsSubmitDisabled(true);
   
     const playAnimation = (animationInstance, inputId, startRotation, callback) => {
@@ -179,11 +199,11 @@ function App() {
           <div className="flex flex-col w-full">
             <h1 className="text-white text-2xl mb-5 font-bold">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
 
-            <div className="flex w-full">
-              <div className="text-white p-2">Chart Name:</div>
+            <div className="flex w-full items-center">
+              <div className="label text-white pe-2">Chart Name:</div>
               <input
                 type="text"
-                className="text-white border-b border-white p-2 mb-4 bg-transparent w-100"
+                className="text-white border-b border-white p-2 bg-transparent w-100"
                 id="title"
                 placeholder="Income"
                 value={title}
@@ -192,22 +212,22 @@ function App() {
             </div>
 
             <div className="flex mt-5 w-full">
-              <div className="flex">
-                <div className="text-white p-2">Date Field M:</div>
+              <div className="flex flex-grow items-center">
+                <div className="label text-white pe-2">Data Field M:</div>
                 <input
                   type="number"
-                  className="text-white border border-white p-2 mb-4"
+                  className="text-white border border-white p-2"
                   id="mPercentage"
                   placeholder="Enter percentage for M Animation"
                   value={mPercentage}
                   onChange={(e) => setMPercentage(e.target.value)}
                 />
               </div>
-              <div className="flex ms-5">
-                <div className="text-white p-2">Label</div>
+              <div className="flex flex-grow items-center ms-5">
+                <div className="text-white pe-2">Label</div>
                 <input
                   type="text"
-                  className="text-white border border-white p-2 mb-4"
+                  className="text-white border border-white p-2"
                   id="mLabel"
                   placeholder="R100 to 400k"
                   value={mLabel}
@@ -217,35 +237,41 @@ function App() {
             </div>
 
             <div className="flex mt-5">
-              <div className="flex">
-                <div className="text-white p-2">Date Field C:</div>
-                <input type="number" className="text-white border border-white p-2 mb-4" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
+              <div className="flex flex-grow items-center">
+                <div className="label text-white pe-2">Data Field C:</div>
+                <input type="number" className="text-white border border-white p-2" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
               </div>
-              <div className="flex ms-5">
-                <div className="text-white p-2">Label</div>
-                <input type="text" className="text-white border border-white p-2 mb-4" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="flex mt-5">
-              <div className="flex">
-                <div className="text-white p-2">Date Field A:</div>
-                <input type="number" className="text-white border border-white p-2 mb-4" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
-              </div>
-              <div className="flex ms-5">
-                <div className="text-white p-2">Label</div>
-                <input type="text" className="text-white border border-white p-2 mb-4" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
+              <div className="flex flex-grow ms-5 items-center">
+                <div className="text-white pe-2">Label</div>
+                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
               </div>
             </div>
 
             <div className="flex mt-5">
-              <div className="text-white p-2">Description:</div>
-              <textarea
-                className="text-white border border-white w-75 bg-transparent p-2"
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></textarea>
+              <div className="flex flex-grow items-center">
+                <div className="label text-white pe-2">Data Field A:</div>
+                <input type="number" className="text-white border border-white p-2" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
+              </div>
+              <div className="flex ms-5 flex-grow items-center">
+                <div className="text-white pe-2">Label</div>
+                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
+              </div>
+            </div>
+
+            <div className="flex mt-5">
+              <div className="flex flex-grow items-center">
+                <div className="text-white pe-2">Description:</div>
+                <textarea
+                  className="text-white border border-white w-full bg-transparent p-2"
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                ></textarea>
+              </div>
+            </div>
+
+            <div className="flex mt-5 w-full justify-center"> 
+              {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </div>
 
             <div className="flex w-full justify-center mt-5">

@@ -91,3 +91,11 @@ button:disabled {
     min-height: 310px;
   }
 }
+
+input {
+  width: 100%;
+}
+
+.label {
+  width: 115px;
+}
