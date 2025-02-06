@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 3000"
+    "build": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.12.3",
