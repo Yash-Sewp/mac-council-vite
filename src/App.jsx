@@ -12,6 +12,8 @@ function App() {
 
   const [cStartRotation, setCStartRotation] = useState(0);
   const [aStartRotation, setAStartRotation] = useState(0);
+
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -103,6 +105,26 @@ function App() {
     });
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setMPercentage("");
+    setMLabel("");
+    setCPercentage("");
+    setCLabel("");
+    setAPercentage("");
+    setALabel("");
+
+    setCStartRotation(0);
+    setAStartRotation(0);
+
+    setIsSubmitDisabled(false);
+
+    if (mAnimationInstance) mAnimationInstance.stop();
+    if (cAnimationInstance) cAnimationInstance.stop();
+    if (aAnimationInstance) aAnimationInstance.stop();
+  };
+
   return (
     <>
       <div className="flex items-center justify-center min-h-screen w-full bg-black">
@@ -182,8 +204,8 @@ function App() {
             </div>
 
             <div className="flex w-full justify-start mt-5">
-              <button className="text-white p-2 rounded mt-5 w-75" onClick={playAnimations}>Submit</button>
-              <button className="text-white p-2 rounded mt-5 w-75 ms-3">Reset</button>
+              <button className="text-white p-2 rounded mt-5 w-75" onClick={playAnimations} disabled={isSubmitDisabled}>Submit</button>
+              <button className="text-white p-2 rounded mt-5 w-75 ms-3" onClick={resetForm}>Reset</button>
             </div>
  
           </div>
