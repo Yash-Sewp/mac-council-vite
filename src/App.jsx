@@ -243,7 +243,7 @@ function App() {
               </div>
               <div className="flex flex-grow ms-5 items-center">
                 <div className="text-white pe-2">Label</div>
-                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
+                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R500 to 1000k" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
               </div>
             </div>
 
@@ -254,7 +254,7 @@ function App() {
               </div>
               <div className="flex ms-5 flex-grow items-center">
                 <div className="text-white pe-2">Label</div>
-                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
+                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R10000k+" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
               </div>
             </div>
 
