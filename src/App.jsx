@@ -143,10 +143,9 @@ function App() {
 
   };
   
-
   return (
     <>
-      <div className="flex items-end justify-center min-h-screen w-full bg-black">
+      <div className="container-wrapper min-h-screen w-full bg-black">
         <div className="w-1/3 p-5">
           <div className="flex items-center relative" style={{ width: 350, height: 350 }}>
             <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 350, height: 350 }}></div>
