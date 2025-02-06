@@ -16,6 +16,8 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+
   const [mPercentage, setMPercentage] = useState(0);
   const [mLabel, setMLabel] = useState("");
   const [cPercentage, setCPercentage] = useState(0);
@@ -23,29 +25,29 @@ function App() {
   const [aPercentage, setAPercentage] = useState(0);
   const [aLabel, setALabel] = useState("");
 
-  let mAnimationInstance = null;
-  let aAnimationInstance = null;
-  let cAnimationInstance = null;
+  const mAnimationInstance = useRef(null);
+  const aAnimationInstance = useRef(null);
+  const cAnimationInstance = useRef(null);
 
   useEffect(() => {
     try {
-      mAnimationInstance = lottie.loadAnimation({
+      mAnimationInstance.current = lottie.loadAnimation({
         container: mAnimationContainer.current,
         renderer: "svg",
         loop: false,
         autoplay: false,
         animationData: mAnimation,
       });
-
-      cAnimationInstance = lottie.loadAnimation({
+  
+      cAnimationInstance.current = lottie.loadAnimation({
         container: cAnimationContainer.current,
         renderer: "svg",
         loop: false,
         autoplay: false,
         animationData: cAnimation,
       });
-
-      aAnimationInstance = lottie.loadAnimation({
+  
+      aAnimationInstance.current = lottie.loadAnimation({
         container: aAnimationContainer.current,
         renderer: "svg",
         loop: false,
@@ -55,53 +57,85 @@ function App() {
     } catch (error) {
       console.error("Error parsing Lottie JSON:", error);
     }
-
+  
     return () => {
-      if (mAnimationInstance) {
-        mAnimationInstance.destroy();
-      }
-      if (aAnimationInstance) {
-        aAnimationInstance.destroy();
-      }
-      if (cAnimationInstance) {
-        cAnimationInstance.destroy();
-      }
+      mAnimationInstance.current?.destroy();
+      cAnimationInstance.current?.destroy();
+      aAnimationInstance.current?.destroy();
     };
   }, []);
+  
 
   // Function to start sequential animations
   const playAnimations = () => {
+    setIsSubmitDisabled(true);
+  
     const playAnimation = (animationInstance, inputId, startRotation) => {
       const percentage = parseFloat(document.getElementById(inputId).value);
-
-      // title = document.getElementById('title').value;
-      // description = document.getElementById('description').value;
-
-      if (animationInstance && percentage > 0) {
-        const totalDegrees = 360; // Full circle
+      if (animationInstance.current && percentage > 0) {
+        const totalDegrees = 360;
         const endRotation = startRotation + (percentage / 100) * totalDegrees;
-        animationInstance.goToAndPlay(0, true);
-        animationInstance.playSegments([0, percentage], true);
+        animationInstance.current.goToAndPlay(0, true);
+        animationInstance.current.playSegments([0, percentage], true);
         return endRotation;
       }
       return startRotation;
     };
-
-    // Start M animation at 0 degrees
-    let mEndRotation = playAnimation(mAnimationInstance, 'mPercentage', 0);
-
-    // Add event listener to start C animation when M animation completes
-    mAnimationInstance.addEventListener('complete', () => {
-      let cEndRotation = playAnimation(cAnimationInstance, 'cPercentage', mEndRotation);
+  
+    let mEndRotation = playAnimation(mAnimationInstance, "mPercentage", 0);
+  
+    mAnimationInstance.current.addEventListener("complete", () => {
+      let cEndRotation = playAnimation(cAnimationInstance, "cPercentage", mEndRotation);
       setCStartRotation(mEndRotation);
-
-      // Add event listener to start A animation when C animation completes
-      cAnimationInstance.addEventListener('complete', () => {
-        let aEndRotation = playAnimation(aAnimationInstance, 'aPercentage', cEndRotation);
+  
+      cAnimationInstance.current.addEventListener("complete", () => {
+        let aEndRotation = playAnimation(aAnimationInstance, "aPercentage", cEndRotation);
         setAStartRotation(cEndRotation);
-      });
+      }, { once: true }); // Ensure it runs only once
+    }, { once: true }); // Ensure it runs only once
+  };
+  
+  const resetForm = () => {
+    document.getElementById("aPercentage").value = "";
+    document.getElementById("cPercentage").value = "";
+    document.getElementById("mPercentage").value = "";
+
+    setTitle("");
+    setDescription("");
+  
+    setIsSubmitDisabled(false);
+  
+    // Destroy animations completely
+    mAnimationInstance.current?.destroy();
+    cAnimationInstance.current?.destroy();
+    aAnimationInstance.current?.destroy();
+  
+    // Reinitialize animations
+    mAnimationInstance.current = lottie.loadAnimation({
+      container: mAnimationContainer.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: mAnimation,
+    });
+  
+    cAnimationInstance.current = lottie.loadAnimation({
+      container: cAnimationContainer.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: cAnimation,
+    });
+  
+    aAnimationInstance.current = lottie.loadAnimation({
+      container: aAnimationContainer.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: aAnimation,
     });
   };
+  
 
   return (
     <>
@@ -182,8 +216,8 @@ function App() {
             </div>
 
             <div className="flex w-full justify-start mt-5">
-              <button className="text-white p-2 rounded mt-5 w-75" onClick={playAnimations}>Submit</button>
-              <button className="text-white p-2 rounded mt-5 w-75 ms-3">Reset</button>
+              <button className="text-white p-2 rounded mt-5 w-75" onClick={playAnimations}  disabled={isSubmitDisabled}>Submit</button>
+              <button className="text-white p-2 rounded mt-5 w-75 ms-3" onClick={resetForm}>Reset</button>
             </div>
  
           </div>
