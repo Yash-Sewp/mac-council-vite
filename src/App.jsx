@@ -64,35 +64,40 @@ function App() {
       aAnimationInstance.current?.destroy();
     };
   }, []);
-  
 
-  // Function to start sequential animations
   const playAnimations = () => {
     setIsSubmitDisabled(true);
   
-    const playAnimation = (animationInstance, inputId, startRotation) => {
-      const percentage = parseFloat(document.getElementById(inputId).value);
+    const playAnimation = (animationInstance, inputId, startRotation, callback) => {
+      const inputValue = document.getElementById(inputId).value.trim();
+      const percentage = inputValue ? parseFloat(inputValue) : 0;
+      
       if (animationInstance.current && percentage > 0) {
         const totalDegrees = 360;
         const endRotation = startRotation + (percentage / 100) * totalDegrees;
         animationInstance.current.goToAndPlay(0, true);
         animationInstance.current.playSegments([0, percentage], true);
+  
+        animationInstance.current.addEventListener("complete", () => {
+          if (callback) callback(endRotation);
+        }, { once: true });
+  
         return endRotation;
+      } else {
+        // Skip animation and directly call the next step
+        if (callback) callback(startRotation);
+        return startRotation;
       }
-      return startRotation;
     };
   
-    let mEndRotation = playAnimation(mAnimationInstance, "mPercentage", 0);
-  
-    mAnimationInstance.current.addEventListener("complete", () => {
-      let cEndRotation = playAnimation(cAnimationInstance, "cPercentage", mEndRotation);
+    let mEndRotation = playAnimation(mAnimationInstance, "mPercentage", 0, (mEndRotation) => {
       setCStartRotation(mEndRotation);
   
-      cAnimationInstance.current.addEventListener("complete", () => {
-        let aEndRotation = playAnimation(aAnimationInstance, "aPercentage", cEndRotation);
+      let cEndRotation = playAnimation(cAnimationInstance, "cPercentage", mEndRotation, (cEndRotation) => {
         setAStartRotation(cEndRotation);
-      }, { once: true }); // Ensure it runs only once
-    }, { once: true }); // Ensure it runs only once
+        playAnimation(aAnimationInstance, "aPercentage", cEndRotation);
+      });
+    });
   };
   
   const resetForm = () => {
