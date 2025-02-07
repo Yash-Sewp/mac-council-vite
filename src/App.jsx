@@ -171,7 +171,7 @@ function App() {
   return (
     <>
       <div className="container-wrapper min-h-screen w-full bg-black">
-        <div className="w-1/3 p-5">
+        <div className="md:w-1/3 p-5">
           <div className="flex items-center relative" style={{ width: 350, height: 350 }}>
             <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 350, height: 350 }}></div>
             <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 350, height: 350, transform: `rotate(-${cStartRotation}deg)` }}></div>
@@ -195,11 +195,11 @@ function App() {
           
           </div>
         </div>
-        <div className="w-1/2 p-5">
+        <div className="md:w-1/2 p-5">
           <div className="flex flex-col w-full">
-            <h1 className="text-white text-2xl mb-5 font-bold">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
+            <h1 className="heading text-white mb-5">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
 
-            <div className="flex w-full items-center">
+            <div className="flex items-center">
               <div className="label text-white pe-2">Chart Name:</div>
               <input
                 type="text"
@@ -211,8 +211,8 @@ function App() {
               />
             </div>
 
-            <div className="flex mt-5 w-full">
-              <div className="flex flex-grow items-center">
+            <div className="flex justify-between mt-5">
+              <div className="flex items-center">
                 <div className="label text-white pe-2">Data Field M:</div>
                 <input
                   type="number"
@@ -223,7 +223,7 @@ function App() {
                   onChange={(e) => setMPercentage(e.target.value)}
                 />
               </div>
-              <div className="flex flex-grow items-center ms-5">
+              <div className="label-col flex items-center w-full">
                 <div className="text-white pe-2">Label</div>
                 <input
                   type="text"
@@ -236,47 +236,50 @@ function App() {
               </div>
             </div>
 
-            <div className="flex mt-5">
-              <div className="flex flex-grow items-center">
+            <div className="flex justify-between mt-5">
+              <div className="flex items-center">
                 <div className="label text-white pe-2">Data Field C:</div>
                 <input type="number" className="text-white border border-white p-2" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
               </div>
-              <div className="flex flex-grow ms-5 items-center">
+              <div className="label-col flex items-center w-full">
                 <div className="text-white pe-2">Label</div>
                 <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R500 to 1000k" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
               </div>
             </div>
 
-            <div className="flex mt-5">
-              <div className="flex flex-grow items-center">
+            <div className="flex justify-between mt-5">
+              <div className="flex items-center">
                 <div className="label text-white pe-2">Data Field A:</div>
                 <input type="number" className="text-white border border-white p-2" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
               </div>
-              <div className="flex ms-5 flex-grow items-center">
+              <div className="label-col flex items-center w-full">
                 <div className="text-white pe-2">Label</div>
                 <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R10000k+" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
               </div>
             </div>
 
-            <div className="flex mt-5">
-              <div className="flex flex-grow items-center">
-                <div className="text-white pe-2">Description:</div>
+            <div className="flex justify-between mt-5">
+              <div className="flex items-start w-full">
+                <div className="label text-white pe-2 mt-2">Description:</div>
                 <textarea
                   className="text-white border border-white w-full bg-transparent p-2"
                   id="description"
+                  placeholder="<Leave empty if none>"
+                  rows={5}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
               </div>
             </div>
 
-            <div className="flex mt-5 w-full justify-center"> 
+            <div className="flex justify-between mt-5 w-full justify-end"> 
               {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </div>
 
-            <div className="flex w-full justify-center mt-5">
-              <button className="bg-white text-black p-2 mt-5" onClick={playAnimations}  disabled={isSubmitDisabled}>Submit</button>
-              <button className="bg-white text-black p-2 mt-5 ms-3" onClick={resetForm}>Reset</button>
+            <div className="flex w-full justify-end">
+              <button className="bg-white text-black p-2 mt-5 md:mt-0 miriam-bold" onClick={playAnimations}  disabled={isSubmitDisabled}>Generate</button>
+
+              <button className="bg-white text-black p-2 mt-5 md:mt-0 ms-3 miriam-bold" onClick={resetForm}>Reset</button>
             </div>
  
           </div>

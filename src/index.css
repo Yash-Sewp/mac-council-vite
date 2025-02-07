@@ -1,9 +1,30 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'miriam-bold';
+  src: url('assets/fonts/miriamlibre-bold-webfont.woff2') format('woff2'),
+       url('assets/fonts/MiriamLibre-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'miriam-regular';
+  src: url('assets/fonts/MiriamLibre-Regular.woff2') format('woff2'),
+       url('assets/fonts/MiriamLibre-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'fixture-semibold';
+  src: url('assets/fonts/Fixture-CondensedSemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: 'miriam-regular', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -13,6 +34,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.miriam-bold {
+  font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.fixture-semibold {
+  font-family: 'fixture-semibold';
 }
 
 a {
@@ -72,6 +101,12 @@ button:disabled {
   }
 }
 
+.heading {
+  @media (min-width: 1440px) {
+    font-size: 4.4rem;
+  }
+}
+
 .logo {
   width: 300px;
 }
@@ -97,5 +132,16 @@ input {
 }
 
 .label {
-  width: 115px;
+  font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  min-width: 123px;
+}
+
+input[type="number"] {
+  width: 195px;
+}
+
+.label-col {
+  @media (min-width: 1024px) {
+    margin-left: 50px;
+  }
 }
