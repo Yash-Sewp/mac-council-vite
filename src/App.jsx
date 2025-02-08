@@ -40,14 +40,6 @@ function App() {
         animationData: mAnimation,
       });
   
-      cAnimationInstance.current = lottie.loadAnimation({
-        container: cAnimationContainer.current,
-        renderer: "svg",
-        loop: false,
-        autoplay: false,
-        animationData: cAnimation,
-      });
-  
       aAnimationInstance.current = lottie.loadAnimation({
         container: aAnimationContainer.current,
         renderer: "svg",
@@ -55,14 +47,22 @@ function App() {
         autoplay: false,
         animationData: aAnimation,
       });
+  
+      cAnimationInstance.current = lottie.loadAnimation({
+        container: cAnimationContainer.current,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        animationData: cAnimation,
+      });
     } catch (error) {
       console.error("Error parsing Lottie JSON:", error);
     }
   
     return () => {
       mAnimationInstance.current?.destroy();
-      cAnimationInstance.current?.destroy();
       aAnimationInstance.current?.destroy();
+      cAnimationInstance.current?.destroy();
     };
   }, []);
 
@@ -111,11 +111,11 @@ function App() {
     };
   
     let mEndRotation = playAnimation(mAnimationInstance, "mPercentage", 0, (mEndRotation) => {
-      setCStartRotation(mEndRotation);
+      setAStartRotation(mEndRotation);
   
-      let cEndRotation = playAnimation(cAnimationInstance, "cPercentage", mEndRotation, (cEndRotation) => {
-        setAStartRotation(cEndRotation);
-        playAnimation(aAnimationInstance, "aPercentage", cEndRotation);
+      let aEndRotation = playAnimation(aAnimationInstance, "aPercentage", mEndRotation, (aEndRotation) => {
+        setCStartRotation(aEndRotation);
+        playAnimation(cAnimationInstance, "cPercentage", aEndRotation);
       });
     });
   };
@@ -136,8 +136,8 @@ function App() {
     
     // Destroy animations completely
     mAnimationInstance.current?.destroy();
-    cAnimationInstance.current?.destroy();
     aAnimationInstance.current?.destroy();
+    cAnimationInstance.current?.destroy();
   
     // Reinitialize animations
     mAnimationInstance.current = lottie.loadAnimation({
@@ -148,20 +148,20 @@ function App() {
       animationData: mAnimation,
     });
   
-    cAnimationInstance.current = lottie.loadAnimation({
-      container: cAnimationContainer.current,
-      renderer: "svg",
-      loop: false,
-      autoplay: false,
-      animationData: cAnimation,
-    });
-  
     aAnimationInstance.current = lottie.loadAnimation({
       container: aAnimationContainer.current,
       renderer: "svg",
       loop: false,
       autoplay: false,
       animationData: aAnimation,
+    });
+  
+    cAnimationInstance.current = lottie.loadAnimation({
+      container: cAnimationContainer.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: cAnimation,
     });
 
     setIsSubmitDisabled(false);
@@ -172,10 +172,10 @@ function App() {
     <>
       <div className="container-wrapper min-h-screen w-full bg-black">
         <div className="md:w-1/3 p-5">
-          <div className="flex items-center relative" style={{ width: 350, height: 350 }}>
-            <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 350, height: 350 }}></div>
-            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 350, height: 350, transform: `rotate(-${cStartRotation}deg)` }}></div>
-            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 350, height: 350, transform: `rotate(-${aStartRotation}deg)` }}></div>
+          <div className="flex items-center relative" style={{ width: 400, height: 400 }}>
+            <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 400, height: 400 }}></div>
+            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${cStartRotation}deg)` }}></div>
+            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${aStartRotation}deg)` }}></div>
           </div>
 
           <div className="flex flex-col w-full">
@@ -224,7 +224,7 @@ function App() {
                 />
               </div>
               <div className="label-col flex items-center w-full">
-                <div className="text-white pe-2">Label</div>
+                <div className="text-white pe-4 miriam-bold">Label:</div>
                 <input
                   type="text"
                   className="text-white border border-white p-2"
@@ -235,6 +235,17 @@ function App() {
                 />
               </div>
             </div>
+            
+            <div className="flex justify-between mt-5">
+              <div className="flex items-center">
+                <div className="label text-white pe-2">Data Field A:</div>
+                <input type="number" className="text-white border border-white p-2" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
+              </div>
+              <div className="label-col flex items-center w-full">
+                <div className="text-white pe-4 miriam-bold">Label:</div>
+                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R10000k+" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
+              </div>
+            </div>
 
             <div className="flex justify-between mt-5">
               <div className="flex items-center">
@@ -242,19 +253,8 @@ function App() {
                 <input type="number" className="text-white border border-white p-2" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
               </div>
               <div className="label-col flex items-center w-full">
-                <div className="text-white pe-2">Label</div>
+                <div className="text-white pe-4 miriam-bold">Label:</div>
                 <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R500 to 1000k" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="flex justify-between mt-5">
-              <div className="flex items-center">
-                <div className="label text-white pe-2">Data Field A:</div>
-                <input type="number" className="text-white border border-white p-2" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
-              </div>
-              <div className="label-col flex items-center w-full">
-                <div className="text-white pe-2">Label</div>
-                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R10000k+" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
               </div>
             </div>
 
