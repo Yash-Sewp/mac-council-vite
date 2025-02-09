@@ -72,7 +72,7 @@ function App() {
     const a = parseFloat(aPercentage) || 0;
     const total = m + c + a;
 
-    if (total > 100) {
+    if (total > 150) {
       setErrorMessage("Total percentage cannot exceed 100%");
       setIsSubmitDisabled(true);
       return false;
@@ -171,11 +171,12 @@ function App() {
   return (
     <>
       <div className="container-wrapper min-h-screen w-full bg-black">
-        <div className="md:w-1/3 p-5">
-          <div className="flex items-center relative" style={{ width: 400, height: 400 }}>
-            <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer} style={{ width: 400, height: 400 }}></div>
-            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${cStartRotation}deg)` }}></div>
-            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ width: 400, height: 400, transform: `rotate(-${aStartRotation}deg)` }}></div>
+        <div className="lg:w-1/3 p-5">
+          <h1 className="heading mobile text-white mb-5 md:mt-5">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
+          <div id="animation-wrapper" className="flex items-center relative">
+            <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer}></div>
+            <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ transform: `rotate(-${cStartRotation}deg)` }}></div>
+            <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ transform: `rotate(-${aStartRotation}deg)` }}></div>
           </div>
 
           <div className="flex flex-col w-full">
@@ -184,20 +185,20 @@ function App() {
 
               <hr className="mt-3 mb-3" />
 
-              {title && <h2 className="text-2xl mb-2">{title}</h2>}
+              {title && <h2 className="content-wrapper--title mb-0">{title}</h2>}
 
-              {mPercentage > 0 && <p>{mPercentage}%: <span className="ms-4">{mLabel}</span></p>}
-              {cPercentage > 0 && <p>{cPercentage}%: <span className="ms-4">{cLabel}</span></p>}
-              {aPercentage > 0 && <p>{aPercentage}%: <span className="ms-4">{aLabel}</span></p>}
+              {mPercentage > 0 && <p className="content-wrapper--stats miriam-bold">{mPercentage}% <span className="miriam-regular">{mLabel}</span></p>}
+              {aPercentage > 0 && <p className="content-wrapper--stats miriam-bold">{aPercentage}% <span className="miriam-regular">{aLabel}</span></p>}
+              {cPercentage > 0 && <p className="content-wrapper--stats miriam-bold">{cPercentage}% <span className="miriam-regular">{cLabel}</span></p>}
 
-              {description && <p className="mt-2 text-s text-gray-500">{description}</p>}
+              {description && <p className="content-wrapper--description mt-0">{description}</p>}
             </div>
           
           </div>
         </div>
-        <div className="md:w-1/2 p-5">
+        <div className="lg:w-1/2 p-5">
           <div className="flex flex-col w-full">
-            <h1 className="heading text-white mb-5">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
+            <h1 className="heading desktop text-white mb-5 md:mt-5">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
 
             <div className="flex items-center">
               <div className="label text-white pe-2">Chart Name:</div>
@@ -212,7 +213,7 @@ function App() {
             </div>
 
             <div className="flex justify-between mt-5">
-              <div className="flex items-center">
+              <div className="flex items-center w-full lg:w-auto">
                 <div className="label text-white pe-2">Data Field M:</div>
                 <input
                   type="number"
@@ -223,7 +224,7 @@ function App() {
                   onChange={(e) => setMPercentage(e.target.value)}
                 />
               </div>
-              <div className="label-col flex items-center w-full">
+              <div className="label-col flex items-center w-full content-wrapper--desktop-label">
                 <div className="text-white pe-4 miriam-bold">Label:</div>
                 <input
                   type="text"
@@ -237,24 +238,45 @@ function App() {
             </div>
             
             <div className="flex justify-between mt-5">
-              <div className="flex items-center">
+              <div className="flex items-center w-full lg:w-auto">
                 <div className="label text-white pe-2">Data Field A:</div>
                 <input type="number" className="text-white border border-white p-2" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
               </div>
-              <div className="label-col flex items-center w-full">
+              <div className="label-col flex items-center w-full content-wrapper--desktop-label">
                 <div className="text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R10000k+" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
+                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
               </div>
             </div>
 
             <div className="flex justify-between mt-5">
-              <div className="flex items-center">
+              <div className="flex items-center w-full lg:w-auto">
                 <div className="label text-white pe-2">Data Field C:</div>
                 <input type="number" className="text-white border border-white p-2" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
               </div>
-              <div className="label-col flex items-center w-full">
+              <div className="label-col flex items-center w-full content-wrapper--desktop-label">
                 <div className="text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R500 to 1000k" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
+                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
+              </div>
+            </div>
+
+            <div className="flex justify-between mt-5 content-wrapper--mobile-label">
+              <div className="label-col-mobile flex items-center w-full">
+                <div className="label text-white pe-4 miriam-bold">Label:</div>
+                <input type="text" className="text-white border border-white p-2" id="mLabel" placeholder="R100 to 400k" value={mLabel} onChange={(e) => setMLabel(e.target.value)} />
+              </div>
+            </div>
+
+            <div className="flex justify-between mt-5 content-wrapper--mobile-label">
+              <div className="label-col-mobile flex items-center w-full">
+                <div className="label text-white pe-4 miriam-bold">Label:</div>
+                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
+              </div>
+            </div>
+
+            <div className="flex justify-between mt-5 content-wrapper--mobile-label">
+              <div className="label-col-mobile flex items-center w-full">
+                <div className="label text-white pe-4 miriam-bold">Label:</div>
+                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
               </div>
             </div>
 
@@ -272,16 +294,15 @@ function App() {
               </div>
             </div>
 
-            <div className="flex justify-between mt-5 w-full justify-end"> 
+            <div className="flex justify-between mt-4 mb-4 w-full justify-end"> 
               {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </div>
 
-            <div className="flex w-full justify-end">
+            <div className="content-wrapper--btns flex w-full justify-between lg:justify-end">
               <button className="bg-white text-black p-2 mt-5 md:mt-0 miriam-bold" onClick={playAnimations}  disabled={isSubmitDisabled}>Generate</button>
 
-              <button className="bg-white text-black p-2 mt-5 md:mt-0 ms-3 miriam-bold" onClick={resetForm}>Reset</button>
+              <button className="bg-white text-black p-2 mt-5 md:mt-0 md:ms-3 miriam-bold" onClick={resetForm}>Reset</button>
             </div>
- 
           </div>
         </div>
       </div>

@@ -36,6 +36,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.miriam-regular {
+  font-family: 'miriam-regular', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
 .miriam-bold {
   font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
@@ -73,7 +77,11 @@ button {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
-  min-width: 200px;
+  min-width: 130px;
+
+  @media (width >= 64rem) {
+    min-width: 200px;
+  }
 }
 button:hover {
   border-color: #646cff;
@@ -102,8 +110,25 @@ button:disabled {
 }
 
 .heading {
-  @media (min-width: 1440px) {
+  font-size: 2.8rem;
+  @media (width >= 64rem) {
     font-size: 4.4rem;
+  }
+
+  &.mobile {
+    margin-top: 40px;
+    @media (width >= 64rem) {
+      display: none;
+    } 
+  }
+
+  &.desktop {
+    display: none;
+
+    @media (width >= 64rem) {
+      display: block;
+      margin-top: 110px;
+    }
   }
 }
 
@@ -112,18 +137,50 @@ button:disabled {
 }
 
 .container-wrapper {
-  @media (min-width: 1024px) {
+  @media (width >= 64rem) {
     display: flex;
-    align-items: end;
     justify-content: center;
-    padding-bottom: 150px;
+  }
+
+  hr {
+    width: 50px;
   }
 }
 
 .content-wrapper {
+  margin-left: 110px;
+
   @media (min-width: 1024px) {
-    margin-left: 200px;
-    min-height: 310px;
+    margin-left: 150px;
+    min-height: 400px;
+  }
+}
+
+.content-wrapper--title, .content-wrapper--stats {
+  @media (width >= 64rem) {
+    font-size: 1.2rem; 
+  }
+}
+
+.content-wrapper--description {
+  @media (width >= 64rem) {
+    font-size: .8rem;
+  }
+}
+
+.content-wrapper--desktop-label {
+  display: none;
+
+  @media (width >= 64rem) {
+    display: flex;
+  }
+}
+
+.content-wrapper--mobile-label {
+  display: flex;
+
+  @media (width >= 64rem) {
+    display: none;
   }
 }
 
@@ -137,11 +194,33 @@ input {
 }
 
 input[type="number"] {
-  width: 195px;
+  @media (width >= 64rem) {
+    width: 195px;
+  }
 }
 
 .label-col {
-  @media (min-width: 1024px) {
+  @media (width >= 64rem) {   
     margin-left: 50px;
   }
+}
+
+#animation-wrapper, #mAnimationContainer, #cAnimationContainer, #aAnimationContainer {
+  width: 260px;
+  height: 260px;
+
+  @media (width >= 64rem) {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+#animation-wrapper { 
+  @media (width >= 70rem) {
+    margin-left: -50px;
+  }
+}
+
+.content-wrapper--description {
+  word-wrap: break-word;
 }
