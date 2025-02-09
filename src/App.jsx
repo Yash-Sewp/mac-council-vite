@@ -259,7 +259,7 @@ function App() {
               </div>
             </div>
 
-            <div className="flex justify-between mt-5 content-wrapper--mobile-label">
+            <div className="flex justify-between mt-5 content-wrapper--mobile-label mt-5 pt-5">
               <div className="label-col-mobile flex items-center w-full">
                 <div className="label text-white pe-4 miriam-bold">Label:</div>
                 <input type="text" className="text-white border border-white p-2" id="mLabel" placeholder="R100 to 400k" value={mLabel} onChange={(e) => setMLabel(e.target.value)} />
