@@ -112,7 +112,7 @@ button:disabled {
 .heading {
   font-size: 2.8rem;
   @media (width >= 64rem) {
-    font-size: 4.4rem;
+    font-size: 6.4rem;
     line-height: .9;
   }
 
@@ -128,7 +128,7 @@ button:disabled {
 
     @media (width >= 64rem) {
       display: block;
-      margin-top: 110px;
+      margin-top: 40px;
     }
   }
 }

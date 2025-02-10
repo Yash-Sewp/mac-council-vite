@@ -112,11 +112,12 @@ function App() {
   
     let mEndRotation = playAnimation(mAnimationInstance, "mPercentage", 0, (mEndRotation) => {
       setAStartRotation(mEndRotation);
-  
+      console.log("mEndRotation", mEndRotation);
       let aEndRotation = playAnimation(aAnimationInstance, "aPercentage", mEndRotation, (aEndRotation) => {
         setCStartRotation(aEndRotation);
         playAnimation(cAnimationInstance, "cPercentage", aEndRotation);
       });
+      console.log("aEndRotation", aEndRotation);
     });
   };
   
@@ -172,7 +173,7 @@ function App() {
     <>
       <div className="container-wrapper min-h-screen w-full bg-black">
         <div className="lg:w-1/3 p-5">
-          <h1 className="heading mobile text-white mb-5 md:mt-5">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
+          <h1 className="heading mobile text-white mb-5 md:mt-5 fixture-semibold">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
           <div id="animation-wrapper" className="flex items-center relative">
             <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer}></div>
             <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ transform: `rotate(-${cStartRotation}deg)` }}></div>
@@ -198,7 +199,7 @@ function App() {
         </div>
         <div className="lg:w-1/2 p-5">
           <div className="flex flex-col w-full">
-            <h1 className="heading desktop text-white mb-5 md:mt-5">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
+            <h1 className="heading desktop text-white mb-5 md:mt-5 fixture-semibold">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
 
             <div className="flex items-center">
               <div className="label text-white pe-2">Chart Name:</div>
