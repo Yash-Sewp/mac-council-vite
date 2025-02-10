@@ -72,7 +72,7 @@ function App() {
     const a = parseFloat(aPercentage) || 0;
     const total = m + c + a;
 
-    if (total > 150) {
+    if (total > 100) {
       setErrorMessage("Total percentage cannot exceed 100%");
       setIsSubmitDisabled(true);
       return false;
@@ -202,14 +202,22 @@ function App() {
 
             <div className="flex items-center">
               <div className="label text-white pe-2">Chart Name:</div>
-              <input
-                type="text"
-                className="text-white border-b border-white p-2 bg-transparent w-100"
+              <select
+                className="text-white border-b border-white p-2 w-100 rounded-none w-full"
                 id="title"
-                placeholder="Income"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-              />
+              >
+                <option value="" disabled>Select Chart Name</option>
+                <option value="Race">Race</option>
+                <option value="Age">Age</option>
+                <option value="Gender">Gender</option>
+                <option value="Education level">Education level</option>
+                <option value="Income">Income</option>
+                <option value="Geographic location">Geographic location</option>
+                <option value="Living standards">Living standards</option>
+                <option value="Employment Type">Employment Type</option>
+              </select>
             </div>
 
             <div className="flex justify-between mt-5">
@@ -294,11 +302,28 @@ function App() {
               </div>
             </div>
 
-            <div className="flex justify-between mt-4 mb-4 w-full justify-end"> 
-              {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            
+            <div className="flex justify-between mt-3">
+              <div className="flex items-start w-full">
+                <div className="label text-white pe-2 mt-2"></div>
+                {errorMessage && (
+                  <div className="content-warning flex justify-between items-start mt-4 mb-4 w-full justify-end pt-5 pb-5 ps-5 pe-5">
+                    <p className="text-black flex-grow">
+                      Unable to generate logo. The combined percentage <br className="break" /> total must be equal to <strong className="miriam-bold">100%</strong>. Please modify your values.
+                    </p>
+                    <div
+                      className="content-warning--btn text-black pt-0"
+                      onClick={() => setErrorMessage("")}
+                      aria-label="Close"
+                    >
+                      <i className="fas fa-times"></i>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="content-wrapper--btns flex w-full justify-between lg:justify-end">
+            <div className="content-wrapper--btns flex w-full justify-between mt-3 lg:justify-end">
               <button className="bg-white text-black p-2 mt-5 md:mt-0 miriam-bold" onClick={playAnimations}  disabled={isSubmitDisabled}>Generate</button>
 
               <button className="bg-white text-black p-2 mt-5 md:mt-0 md:ms-3 miriam-bold" onClick={resetForm}>Reset</button>
