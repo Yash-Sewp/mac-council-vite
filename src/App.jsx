@@ -14,7 +14,6 @@ function App() {
   const [aStartRotation, setAStartRotation] = useState(0);
   
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -260,7 +259,6 @@ function App() {
       document.getElementById("mPercentage").value = "";
 
       setTitle("");
-      setDescription("");
       setMPercentage(0);
       setMLabel("");
       setCPercentage(0);
@@ -346,8 +344,6 @@ function App() {
               {mPercentage > 0 && <p className="text-white content-wrapper--stats miriam-bold">{mPercentage}% <span className="miriam-regular">{mLabel}</span></p>}
               {aPercentage > 0 && <p className="text-white content-wrapper--stats miriam-bold">{aPercentage}% <span className="miriam-regular">{aLabel}</span></p>}
               {cPercentage > 0 && <p className="text-white content-wrapper--stats miriam-bold">{cPercentage}% <span className="miriam-regular">{cLabel}</span></p>}
-
-              {description && <p className="text-white content-wrapper--description mt-0">{description}</p>}
             </div>
           
           </div>
@@ -356,81 +352,75 @@ function App() {
           <div className="flex flex-col w-full">
             <h1 className="heading desktop text-white mb-5 md:mt-5 fixture-semibold">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
 
-            <div className="flex items-center">
-              <div className="label text-white pe-2">Chart Name:</div>
-              <select
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="text-white border-b border-white p-2 w-100 rounded-none w-full"
-              >
-                <option value="">Select Category</option>
-                {Object.keys(titleOptions).map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+            <div className="mt-5">
+              <div className="w-full flex flex-col md:flex-row md:items-center">
+                <div className="label text-white mb-1 md:mb-0 md:w-1/4">Chart Name:</div>
+                <select
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="text-white border-b border-white p-3 w-full rounded-none"
+                >
+                  <option value="">Select Category</option>
+                  {Object.keys(titleOptions).map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <div className="flex justify-between mt-5">
-              <div className="flex items-center w-full lg:w-auto">
-                <div className="label-wrapper label text-white pe-2">Data Field M:</div>
-                <input
-                  type="number"
-                  className="text-white border border-white p-2"
-                  id="mPercentage"
-                  placeholder="Enter percentage for M Animation"
-                  value={mPercentage}
-                  onChange={(e) => setMPercentage(e.target.value)}
-                />
-              </div>
-              <div className="label-col flex items-center w-full">
-                <div className="label-wrapper text-white pe-4 miriam-bold">Label:</div>
-                <input
-                  type="text"
-                  className="text-white border-b border-white p-2"
-                  id="mLabel"
-                  placeholder="R100 to 400k"
-                  value={mLabel}
-                  readOnly
-                  onChange={(e) => setMLabel(e.target.value)}
-                />
+            <div className="mt-5">
+              <div className="w-full flex flex-col md:flex-row md:items-center">
+                <div className="label text-white mb-1 md:mb-0 md:w-1/4">{mLabel || 'Data Field M'}</div>
+                <div className="relative w-full">
+                  <input
+                    type="number"
+                    className="text-white border border-white p-3 w-full pr-10"
+                    id="mPercentage"
+                    placeholder="Enter percentage"
+                    value={mPercentage}
+                    onChange={(e) => setMPercentage(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white">%</span>
+                </div>
               </div>
             </div>
             
-            <div className="flex justify-between mt-5">
-              <div className="flex items-center w-full lg:w-auto">
-                <div className="label-wrapper label text-white pe-2">Data Field A:</div>
-                <input type="number" className="text-white border border-white p-2" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
-              </div>
-              <div className="label-col flex items-center w-full">
-                <div className="label-wrapper text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border-b border-white p-2" id="aLabel" placeholder="R500 to 1000k" readOnly value={aLabel} onChange={(e) => setALabel(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="flex justify-between mt-5">
-              <div className="flex items-center w-full lg:w-auto">
-                <div className="label label-wrapper text-white pe-2">Data Field C:</div>
-                <input type="number" className="text-white border border-white p-2" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
-              </div>
-              <div className="label-col flex items-center w-full">
-                <div className="label-wrapper text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border-b border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} readOnly onChange={(e) => setCLabel(e.target.value)} />
+            <div className="mt-8 md:mt-5">
+              <div className="w-full flex flex-col md:flex-row md:items-center">
+                <div className="label text-white mb-1 md:mb-0 md:w-1/4">{aLabel || 'Data Field A'}</div>
+                <div className="relative w-full">
+                  <input 
+                    type="number" 
+                    className="text-white border border-white p-3 w-full pr-10" 
+                    id="aPercentage" 
+                    placeholder="Enter percentage" 
+                    value={aPercentage} 
+                    onChange={(e) => setAPercentage(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white">%</span>
+                </div>
               </div>
             </div>
 
-            <div className="flex justify-between mt-5">
-              <div className="flex items-start w-full">
-                <div className="label text-white pe-2 mt-2">Description:</div>
-                <textarea
-                  className="text-white border border-white w-full bg-transparent p-2"
-                  id="description"
-                  placeholder="<Leave empty if none>"
-                  rows={5}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                ></textarea>
+            <div className="mt-8 md:mt-5">
+              <div className="w-full flex flex-col md:flex-row md:items-center">
+                <div className="label text-white mb-1 md:mb-0 md:w-1/4">{cLabel || 'Data Field C'}</div>
+                <div className="relative w-full">
+                  <input 
+                    type="number" 
+                    className="text-white border border-white p-3 w-full pr-10" 
+                    id="cPercentage" 
+                    placeholder="Enter percentage" 
+                    value={cPercentage} 
+                    onChange={(e) => setCPercentage(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white">%</span>
+                </div>
               </div>
             </div>
 
@@ -467,7 +457,7 @@ function App() {
             </div>
 
             <div className="flex justify-end text-xs mt-3">
-              <small className="text-gray-400">v1.2</small>
+              <small className="text-gray-400">v1.3</small>
             </div>
           </div>
         </div>
