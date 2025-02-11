@@ -201,7 +201,7 @@ input {
   font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
   min-width: 100px;
 
-  @media (width >= 400px) {
+  @media (width >= 460px) {
     min-width: 123px;
     
   }
@@ -269,7 +269,7 @@ select option {
 #mPercentage, #cPercentage, #aPercentage {
   width: 50px;
 
-  @media (width >= 64rem) {
+  @media (width >= 560px) {
     width: 100px;
   }
 }
