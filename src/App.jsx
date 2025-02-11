@@ -441,7 +441,7 @@ function App() {
             </div>
 
             <div className="flex justify-end text-xs mt-3">
-              <small className="text-gray-400">v1.1</small>
+              <small className="text-gray-400">v1.2</small>
             </div>
           </div>
         </div>

@@ -199,10 +199,11 @@ input {
 
 .label {
   font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  min-width: 123px;
+  min-width: 100px;
 
-  @media (width >= 768px) {
+  @media (width >= 400px) {
     min-width: 123px;
+    
   }
 }
 
