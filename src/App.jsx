@@ -38,6 +38,11 @@ function App() {
         loop: false,
         autoplay: false,
         animationData: mAnimation,
+        rendererSettings: {
+          progressiveLoad: false
+        },
+        initialSegment: [0, 100],
+        easing: "easeOutQuad"
       });
   
       aAnimationInstance.current = lottie.loadAnimation({
@@ -46,6 +51,11 @@ function App() {
         loop: false,
         autoplay: false,
         animationData: aAnimation,
+        rendererSettings: {
+          progressiveLoad: false
+        },
+        initialSegment: [0, 100],
+        easing: "easeOutQuad"
       });
   
       cAnimationInstance.current = lottie.loadAnimation({
@@ -54,6 +64,11 @@ function App() {
         loop: false,
         autoplay: false,
         animationData: cAnimation,
+        rendererSettings: {
+          progressiveLoad: false
+        },
+        initialSegment: [0, 100],
+        easing: "easeOutQuad"
       });
     } catch (error) {
       console.error("Error parsing Lottie JSON:", error);
@@ -95,13 +110,26 @@ function App() {
       if (animationInstance.current && percentage > 0) {
         const totalDegrees = 360;
         const endRotation = startRotation + (percentage / 100) * totalDegrees;
+        animationInstance.current.setSpeed(1.75);
+        
+        // Calculate frame numbers based on percentage
+        const totalFrames = animationInstance.current.totalFrames;
+        const endFrame = Math.floor((percentage / 100) * totalFrames);
+        const triggerNextAtFrame = Math.floor(endFrame * 0.6); // 60% of the target frame
+        
+        // Add enterFrame listener to track animation progress
+        const enterFrameHandler = () => {
+          if (animationInstance.current.currentFrame >= triggerNextAtFrame) {
+            if (callback) callback(endRotation);
+            // Remove the listener after triggering callback
+            animationInstance.current.removeEventListener('enterFrame', enterFrameHandler);
+          }
+        };
+        
+        animationInstance.current.addEventListener('enterFrame', enterFrameHandler);
         animationInstance.current.goToAndPlay(0, true);
-        animationInstance.current.playSegments([0, percentage], true);
-  
-        animationInstance.current.addEventListener("complete", () => {
-          if (callback) callback(endRotation);
-        }, { once: true });
-  
+        animationInstance.current.playSegments([0, endFrame], true);
+
         return endRotation;
       } else {
         // Skip animation and directly call the next step
@@ -140,13 +168,18 @@ function App() {
     aAnimationInstance.current?.destroy();
     cAnimationInstance.current?.destroy();
   
-    // Reinitialize animations
+    // Reinitialize animations with easing
     mAnimationInstance.current = lottie.loadAnimation({
       container: mAnimationContainer.current,
       renderer: "svg",
       loop: false,
       autoplay: false,
       animationData: mAnimation,
+      rendererSettings: {
+        progressiveLoad: false
+      },
+      initialSegment: [0, 100],
+      easing: "easeOutQuad"
     });
   
     aAnimationInstance.current = lottie.loadAnimation({
@@ -155,6 +188,11 @@ function App() {
       loop: false,
       autoplay: false,
       animationData: aAnimation,
+      rendererSettings: {
+        progressiveLoad: false
+      },
+      initialSegment: [0, 100],
+      easing: "easeOutQuad"
     });
   
     cAnimationInstance.current = lottie.loadAnimation({
@@ -163,6 +201,11 @@ function App() {
       loop: false,
       autoplay: false,
       animationData: cAnimation,
+      rendererSettings: {
+        progressiveLoad: false
+      },
+      initialSegment: [0, 100],
+      easing: "easeOutQuad"
     });
 
     setIsSubmitDisabled(false);
