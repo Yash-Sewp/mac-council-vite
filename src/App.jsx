@@ -42,7 +42,7 @@ function App() {
           progressiveLoad: false
         },
         initialSegment: [0, 100],
-        easing: "easeOutQuad"
+        easing: "easeInOutCubic"
       });
   
       aAnimationInstance.current = lottie.loadAnimation({
@@ -55,7 +55,7 @@ function App() {
           progressiveLoad: false
         },
         initialSegment: [0, 100],
-        easing: "easeOutQuad"
+        easing: "easeInOutCubic"
       });
   
       cAnimationInstance.current = lottie.loadAnimation({
@@ -68,7 +68,7 @@ function App() {
           progressiveLoad: false
         },
         initialSegment: [0, 100],
-        easing: "easeOutQuad"
+        easing: "easeInOutCubic"
       });
     } catch (error) {
       console.error("Error parsing Lottie JSON:", error);
@@ -179,7 +179,7 @@ function App() {
         progressiveLoad: false
       },
       initialSegment: [0, 100],
-      easing: "easeOutQuad"
+      easing: "easeInOutCubic"
     });
   
     aAnimationInstance.current = lottie.loadAnimation({
@@ -192,7 +192,7 @@ function App() {
         progressiveLoad: false
       },
       initialSegment: [0, 100],
-      easing: "easeOutQuad"
+      easing: "easeInOutCubic"
     });
   
     cAnimationInstance.current = lottie.loadAnimation({
@@ -205,7 +205,7 @@ function App() {
         progressiveLoad: false
       },
       initialSegment: [0, 100],
-      easing: "easeOutQuad"
+      easing: "easeInOutCubic"
     });
 
     setIsSubmitDisabled(false);
