@@ -85,24 +85,66 @@ function App() {
     const m = parseFloat(mPercentage) || 0;
     const c = parseFloat(cPercentage) || 0;
     const a = parseFloat(aPercentage) || 0;
-    const total = m + c + a;
+    const total = Number((m + c + a).toFixed(3)); // Round to 3 decimal places
 
-    if (total > 100) {
-      setErrorMessage("Total percentage cannot exceed 100%");
-      setIsSubmitDisabled(true);
+    // Check if the total is approximately 100 (allowing for small floating point differences)
+    if (Math.abs(total - 100) > 0.001) {
+      setErrorMessage("Total percentage must equal exactly 100%");
       return false;
     } else {
       setErrorMessage("");
-      setIsSubmitDisabled(false);
       return true;
     }
   };
 
   const playAnimations = () => {
-    if (!validatePercentages()) return; 
+    if (!validatePercentages()) return;
 
-    setIsSubmitDisabled(true);
-  
+    // Destroy existing animations before starting new ones
+    mAnimationInstance.current?.destroy();
+    aAnimationInstance.current?.destroy();
+    cAnimationInstance.current?.destroy();
+
+    // Reinitialize animations
+    mAnimationInstance.current = lottie.loadAnimation({
+      container: mAnimationContainer.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: mAnimation,
+      rendererSettings: {
+        progressiveLoad: false
+      },
+      initialSegment: [0, 100],
+      easing: "easeInOutCubic"
+    });
+
+    aAnimationInstance.current = lottie.loadAnimation({
+      container: aAnimationContainer.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: aAnimation,
+      rendererSettings: {
+        progressiveLoad: false
+      },
+      initialSegment: [0, 100],
+      easing: "easeInOutCubic"
+    });
+
+    cAnimationInstance.current = lottie.loadAnimation({
+      container: cAnimationContainer.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: cAnimation,
+      rendererSettings: {
+        progressiveLoad: false
+      },
+      initialSegment: [0, 100],
+      easing: "easeInOutCubic"
+    });
+
     const playAnimation = (animationInstance, inputId, startRotation, callback) => {
       const inputValue = document.getElementById(inputId).value.trim();
       const percentage = inputValue ? parseFloat(inputValue) : 0;
@@ -110,18 +152,30 @@ function App() {
       if (animationInstance.current && percentage > 0) {
         const totalDegrees = 360;
         const endRotation = startRotation + (percentage / 100) * totalDegrees;
-        animationInstance.current.setSpeed(1.75);
+        
+        // Calculate animation speed based on percentage
+        // For smaller percentages, use slower speed
+        let speed;
+        if (percentage <= 10) {
+          speed = 1.0; // Slowest speed for small percentages
+        } else if (percentage <= 25) {
+          speed = 1.25; // Slightly faster for medium-small percentages
+        } else if (percentage <= 50) {
+          speed = 1.5; // Medium speed for medium percentages
+        } else {
+          speed = 1.75; // Full speed for large percentages
+        }
+        
+        animationInstance.current.setSpeed(speed);
         
         // Calculate frame numbers based on percentage
         const totalFrames = animationInstance.current.totalFrames;
         const endFrame = Math.floor((percentage / 100) * totalFrames);
-        const triggerNextAtFrame = Math.floor(endFrame * 0.6); // 60% of the target frame
+        const triggerNextAtFrame = Math.floor(endFrame * 0.6);
         
-        // Add enterFrame listener to track animation progress
         const enterFrameHandler = () => {
           if (animationInstance.current.currentFrame >= triggerNextAtFrame) {
             if (callback) callback(endRotation);
-            // Remove the listener after triggering callback
             animationInstance.current.removeEventListener('enterFrame', enterFrameHandler);
           }
         };
@@ -132,20 +186,17 @@ function App() {
 
         return endRotation;
       } else {
-        // Skip animation and directly call the next step
         if (callback) callback(startRotation);
         return startRotation;
       }
     };
-  
+
     let mEndRotation = playAnimation(mAnimationInstance, "mPercentage", 0, (mEndRotation) => {
       setAStartRotation(mEndRotation);
-      console.log("mEndRotation", mEndRotation);
       let aEndRotation = playAnimation(aAnimationInstance, "aPercentage", mEndRotation, (aEndRotation) => {
         setCStartRotation(aEndRotation);
         playAnimation(cAnimationInstance, "cPercentage", aEndRotation);
       });
-      console.log("aEndRotation", aEndRotation);
     });
   };
   
