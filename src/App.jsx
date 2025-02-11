@@ -26,6 +26,8 @@ function App() {
   const [aPercentage, setAPercentage] = useState(0);
   const [aLabel, setALabel] = useState("");
 
+  const [isVisible, setIsVisible] = useState(true);
+
   const mAnimationInstance = useRef(null);
   const aAnimationInstance = useRef(null);
   const cAnimationInstance = useRef(null);
@@ -104,6 +106,19 @@ function App() {
   const playAnimations = () => {
     if (!validatePercentages()) return;
 
+    if (isVisible) {
+      setIsVisible(false);
+      setTimeout(() => {
+        setIsVisible(true);
+        generateLogo();
+      }, 1000);
+    } else {
+      setIsVisible(true);
+      generateLogo();
+    }
+  };
+
+  const generateLogo = () => {
     // Destroy existing animations before starting new ones
     mAnimationInstance.current?.destroy();
     aAnimationInstance.current?.destroy();
@@ -215,70 +230,77 @@ function App() {
         playAnimation(cAnimationInstance, "cPercentage", aEndRotation);
       });
     });
-    
   };
   
   const resetForm = () => {
-    document.getElementById("aPercentage").value = "";
-    document.getElementById("cPercentage").value = "";
-    document.getElementById("mPercentage").value = "";
-
-    setTitle("");
-    setDescription("");
-    setMPercentage(0);
-    setMLabel("");
-    setCPercentage(0);
-    setCLabel("");
-    setAPercentage(0);
-    setALabel("");
+    // Fade out first
+    setIsVisible(false);
     
-    // Destroy animations completely
-    mAnimationInstance.current?.destroy();
-    aAnimationInstance.current?.destroy();
-    cAnimationInstance.current?.destroy();
-  
-    // Reinitialize animations with easing
-    mAnimationInstance.current = lottie.loadAnimation({
-      container: mAnimationContainer.current,
-      renderer: "svg",
-      loop: false,
-      autoplay: false,
-      animationData: mAnimation,
-      rendererSettings: {
-        progressiveLoad: false
-      },
-      initialSegment: [0, 100],
-      easing: "easeInOutCubic"
-    });
-  
-    aAnimationInstance.current = lottie.loadAnimation({
-      container: aAnimationContainer.current,
-      renderer: "svg",
-      loop: false,
-      autoplay: false,
-      animationData: aAnimation,
-      rendererSettings: {
-        progressiveLoad: false
-      },
-      initialSegment: [0, 100],
-      easing: "easeInOutCubic"
-    });
-  
-    cAnimationInstance.current = lottie.loadAnimation({
-      container: cAnimationContainer.current,
-      renderer: "svg",
-      loop: false,
-      autoplay: false,
-      animationData: cAnimation,
-      rendererSettings: {
-        progressiveLoad: false
-      },
-      initialSegment: [0, 100],
-      easing: "easeInOutCubic"
-    });
+    // Wait for fade out animation before resetting
+    setTimeout(() => {
+      document.getElementById("aPercentage").value = "";
+      document.getElementById("cPercentage").value = "";
+      document.getElementById("mPercentage").value = "";
 
-    setIsSubmitDisabled(false);
+      setTitle("");
+      setDescription("");
+      setMPercentage(0);
+      setMLabel("");
+      setCPercentage(0);
+      setCLabel("");
+      setAPercentage(0);
+      setALabel("");
+      
+      // Destroy animations completely
+      mAnimationInstance.current?.destroy();
+      aAnimationInstance.current?.destroy();
+      cAnimationInstance.current?.destroy();
+    
+      // Reinitialize animations with easing
+      mAnimationInstance.current = lottie.loadAnimation({
+        container: mAnimationContainer.current,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        animationData: mAnimation,
+        rendererSettings: {
+          progressiveLoad: false
+        },
+        initialSegment: [0, 100],
+        easing: "easeInOutCubic"
+      });
+    
+      aAnimationInstance.current = lottie.loadAnimation({
+        container: aAnimationContainer.current,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        animationData: aAnimation,
+        rendererSettings: {
+          progressiveLoad: false
+        },
+        initialSegment: [0, 100],
+        easing: "easeInOutCubic"
+      });
+    
+      cAnimationInstance.current = lottie.loadAnimation({
+        container: cAnimationContainer.current,
+        renderer: "svg",
+        loop: false,
+        autoplay: false,
+        animationData: cAnimation,
+        rendererSettings: {
+          progressiveLoad: false
+        },
+        initialSegment: [0, 100],
+        easing: "easeInOutCubic"
+      });
 
+      setIsSubmitDisabled(false);
+      
+      // Fade back in after reset
+      setIsVisible(true);
+    }, 300); // Wait for fade out animation to complete
   };
   
   return (
@@ -286,7 +308,11 @@ function App() {
       <div className="container-wrapper min-h-screen w-full bg-black">
         <div className="lg:w-1/3 p-5">
           <h1 className="heading mobile text-white mb-5 md:mt-5 fixture-semibold">GENERATE YOUR <br /> OWN CUSTOM LOGO</h1>
-          <div id="animation-wrapper" className="flex items-center relative">
+          <div 
+            id="animation-wrapper" 
+            className="flex items-center relative transition-opacity duration-300"
+            style={{ opacity: isVisible ? 1 : 0 }}
+          >
             <div id="mAnimationContainer" className="absolute" ref={mAnimationContainer}></div>
             <div id="cAnimationContainer" className="absolute" ref={cAnimationContainer} style={{ transform: `rotate(-${cStartRotation}deg)` }}></div>
             <div id="aAnimationContainer" className="absolute" ref={aAnimationContainer} style={{ transform: `rotate(-${aStartRotation}deg)` }}></div>
