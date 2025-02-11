@@ -30,6 +30,17 @@ function App() {
   const aAnimationInstance = useRef(null);
   const cAnimationInstance = useRef(null);
 
+  const titleOptions = {
+    Race: { mLabel: "Black", aLabel: "White", cLabel: "Other" },
+    Age: { mLabel: "18-30", aLabel: "31-45", cLabel: "46-65" },
+    Gender: { mLabel: "Female", aLabel: "Male", cLabel: "Other" },
+    "Education Level": { mLabel: "Secondary", aLabel: "Under-graduate", cLabel: "Post-graduate" },
+    Income: { mLabel: "R100-400k", aLabel: "R500-1000k", cLabel: "R1000k+" },
+    "Geographic Location": { mLabel: "Kwa-Zulu Natal", aLabel: "Gauteng", cLabel: "Western Cape" },
+    LSM: { mLabel: "1-4", aLabel: "5-7", cLabel: "8-10" },
+    "Employment Type": { mLabel: "Temporary", aLabel: "Contract", cLabel: "Permanent" }
+  };
+
   useEffect(() => {
     try {
       mAnimationInstance.current = lottie.loadAnimation({
@@ -74,6 +85,12 @@ function App() {
       });
       // cAnimationInstance.setSpeed(.25);
 
+      if (titleOptions[title]) {
+        setMLabel(titleOptions[title].mLabel);
+        setALabel(titleOptions[title].aLabel);
+        setCLabel(titleOptions[title].cLabel);
+      }
+
     } catch (error) {
       console.error("Error parsing Lottie JSON:", error);
     }
@@ -83,7 +100,7 @@ function App() {
       aAnimationInstance.current?.destroy();
       cAnimationInstance.current?.destroy();
     };
-  }, []);
+  }, [title]);
 
   const validatePercentages = () => {
     const m = parseFloat(mPercentage) || 0;
@@ -316,26 +333,22 @@ function App() {
             <div className="flex items-center">
               <div className="label text-white pe-2">Chart Name:</div>
               <select
-                className="text-white border-b border-white p-2 w-100 rounded-none w-full"
-                id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                className="text-white border-b border-white p-2 w-100 rounded-none w-full"
               >
-                <option value="" disabled>Select Chart Name</option>
-                <option value="Race">Race</option>
-                <option value="Age">Age</option>
-                <option value="Gender">Gender</option>
-                <option value="Education level">Education level</option>
-                <option value="Income">Income</option>
-                <option value="Geographic location">Geographic location</option>
-                <option value="Living standards">Living standards</option>
-                <option value="Employment Type">Employment Type</option>
+                <option value="">Select Category</option>
+                {Object.keys(titleOptions).map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div className="flex justify-between mt-5">
               <div className="flex items-center w-full lg:w-auto">
-                <div className="label text-white pe-2">Data Field M:</div>
+                <div className="label-wrapper label text-white pe-2">Data Field M:</div>
                 <input
                   type="number"
                   className="text-white border border-white p-2"
@@ -345,14 +358,15 @@ function App() {
                   onChange={(e) => setMPercentage(e.target.value)}
                 />
               </div>
-              <div className="label-col flex items-center w-full content-wrapper--desktop-label">
-                <div className="text-white pe-4 miriam-bold">Label:</div>
+              <div className="label-col flex items-center w-full">
+                <div className="label-wrapper text-white pe-4 miriam-bold">Label:</div>
                 <input
                   type="text"
-                  className="text-white border border-white p-2"
+                  className="text-white border-b border-white p-2"
                   id="mLabel"
                   placeholder="R100 to 400k"
                   value={mLabel}
+                  readOnly
                   onChange={(e) => setMLabel(e.target.value)}
                 />
               </div>
@@ -360,44 +374,23 @@ function App() {
             
             <div className="flex justify-between mt-5">
               <div className="flex items-center w-full lg:w-auto">
-                <div className="label text-white pe-2">Data Field A:</div>
+                <div className="label-wrapper label text-white pe-2">Data Field A:</div>
                 <input type="number" className="text-white border border-white p-2" id="aPercentage" placeholder="Enter percentage for A Animation" value={aPercentage} onChange={(e) => setAPercentage(e.target.value)} />
               </div>
-              <div className="label-col flex items-center w-full content-wrapper--desktop-label">
-                <div className="text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
+              <div className="label-col flex items-center w-full">
+                <div className="label-wrapper text-white pe-4 miriam-bold">Label:</div>
+                <input type="text" className="text-white border-b border-white p-2" id="aLabel" placeholder="R500 to 1000k" readOnly value={aLabel} onChange={(e) => setALabel(e.target.value)} />
               </div>
             </div>
 
             <div className="flex justify-between mt-5">
               <div className="flex items-center w-full lg:w-auto">
-                <div className="label text-white pe-2">Data Field C:</div>
+                <div className="label label-wrapper text-white pe-2">Data Field C:</div>
                 <input type="number" className="text-white border border-white p-2" id="cPercentage" placeholder="Enter percentage for C Animation" value={cPercentage} onChange={(e) => setCPercentage(e.target.value)} />
               </div>
-              <div className="label-col flex items-center w-full content-wrapper--desktop-label">
-                <div className="text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="flex justify-between mt-5 content-wrapper--mobile-label mt-5 pt-5">
-              <div className="label-col-mobile flex items-center w-full">
-                <div className="label text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border border-white p-2" id="mLabel" placeholder="R100 to 400k" value={mLabel} onChange={(e) => setMLabel(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="flex justify-between mt-5 content-wrapper--mobile-label">
-              <div className="label-col-mobile flex items-center w-full">
-                <div className="label text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border border-white p-2" id="aLabel" placeholder="R500 to 1000k" value={aLabel} onChange={(e) => setALabel(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="flex justify-between mt-5 content-wrapper--mobile-label">
-              <div className="label-col-mobile flex items-center w-full">
-                <div className="label text-white pe-4 miriam-bold">Label:</div>
-                <input type="text" className="text-white border border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} onChange={(e) => setCLabel(e.target.value)} />
+              <div className="label-col flex items-center w-full">
+                <div className="label-wrapper text-white pe-4 miriam-bold">Label:</div>
+                <input type="text" className="text-white border-b border-white p-2" id="cLabel" placeholder="R10000k+" value={cLabel} readOnly onChange={(e) => setCLabel(e.target.value)} />
               </div>
             </div>
 
@@ -415,6 +408,11 @@ function App() {
               </div>
             </div>
 
+            <div className="flex justify-between mt-3">
+              <div className="flex items-start w-full">
+                <div className="note label text-white pe-2 mt-2 miriam-regular"><span className="miriam-bold">Note:</span> Your combined percentage total must equal to 100%</div>
+              </div>
+            </div>
             
             <div className="flex justify-between mt-3">
               <div className="flex items-start w-full">
@@ -443,7 +441,7 @@ function App() {
             </div>
 
             <div className="flex justify-end text-xs mt-3">
-              <small className="text-gray-400">v1.01</small>
+              <small className="text-gray-400">v1.1</small>
             </div>
           </div>
         </div>

@@ -37,11 +37,11 @@
 }
 
 .miriam-regular {
-  font-family: 'miriam-regular', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'miriam-regular', system-ui, Avenir, Helvetica, Arial, sans-serif !important;
 }
 
 .miriam-bold {
-  font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif !important;
 }
 
 .fixture-semibold {
@@ -189,9 +189,21 @@ input {
   width: 100%;
 }
 
+.label-wrapper {
+  font-size: 14px;
+
+  @media (width >= 64rem) {
+    font-size: 16px;
+  }
+}
+
 .label {
   font-family: 'miriam-bold', system-ui, Avenir, Helvetica, Arial, sans-serif;
   min-width: 123px;
+
+  @media (width >= 768px) {
+    min-width: 123px;
+  }
 }
 
 input[type="number"] {
@@ -235,6 +247,10 @@ select option {
   background-color: #f6c643;
 }
 
+.note {
+  color: #f6c643;
+}
+
 .content-warning--btn {
   font-size: 30px;
   margin-top: -20px;  
@@ -246,5 +262,13 @@ select option {
 
   @media (width >= 70rem) {
     display: block;
+  }
+}
+
+#mPercentage, #cPercentage, #aPercentage {
+  width: 50px;
+
+  @media (width >= 64rem) {
+    width: 100px;
   }
 }
