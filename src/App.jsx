@@ -354,11 +354,22 @@ function App() {
 
             <div className="mt-5">
               <div className="w-full flex flex-col md:flex-row md:items-center">
-                <div className="label text-white mb-1 md:mb-0 md:w-1/4">Chart Name:</div>
+                <div className="label text-white mb-1 md:mb-0 md:w-1/3 md:pr-6">Chart Name:</div>
                 <select
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="text-white border-b border-white p-3 w-full rounded-none"
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    if (e.target.value === "") {
+                      setMLabel("");
+                      setALabel("");
+                      setCLabel("");
+                    } else if (titleOptions[e.target.value]) {
+                      setMLabel(titleOptions[e.target.value].mLabel);
+                      setALabel(titleOptions[e.target.value].aLabel);
+                      setCLabel(titleOptions[e.target.value].cLabel);
+                    }
+                  }}
+                  className="text-white border-b border-white p-3 pr-8 w-full md:w-2/3 rounded-none appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQgNkw4IDEwTDEyIDYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=')] bg-[length:16px] bg-[center_right_1rem] bg-no-repeat"
                 >
                   <option value="">Select Category</option>
                   {Object.keys(titleOptions).map((option) => (
@@ -372,8 +383,10 @@ function App() {
 
             <div className="mt-5">
               <div className="w-full flex flex-col md:flex-row md:items-center">
-                <div className="label text-white mb-1 md:mb-0 md:w-1/4">{mLabel || 'Data Field M'}</div>
-                <div className="relative w-full">
+                <div className="label text-white mb-1 md:mb-0 md:w-1/3 md:pr-6">
+                  {mLabel ? `M Data - ${mLabel}` : 'M Data Field'}
+                </div>
+                <div className="relative w-full md:w-2/3">
                   <input
                     type="number"
                     className="text-white border border-white p-3 w-full pr-10"
@@ -390,8 +403,10 @@ function App() {
             
             <div className="mt-8 md:mt-5">
               <div className="w-full flex flex-col md:flex-row md:items-center">
-                <div className="label text-white mb-1 md:mb-0 md:w-1/4">{aLabel || 'Data Field A'}</div>
-                <div className="relative w-full">
+                <div className="label text-white mb-1 md:mb-0 md:w-1/3 md:pr-6">
+                  {aLabel ? `A Data - ${aLabel}` : 'A Data Field'}
+                </div>
+                <div className="relative w-full md:w-2/3">
                   <input 
                     type="number" 
                     className="text-white border border-white p-3 w-full pr-10" 
@@ -408,8 +423,10 @@ function App() {
 
             <div className="mt-8 md:mt-5">
               <div className="w-full flex flex-col md:flex-row md:items-center">
-                <div className="label text-white mb-1 md:mb-0 md:w-1/4">{cLabel || 'Data Field C'}</div>
-                <div className="relative w-full">
+                <div className="label text-white mb-1 md:mb-0 md:w-1/3 md:pr-6">
+                  {cLabel ? `C Data - ${cLabel}` : 'C Data Field'}
+                </div>
+                <div className="relative w-full md:w-2/3">
                   <input 
                     type="number" 
                     className="text-white border border-white p-3 w-full pr-10" 
@@ -457,7 +474,7 @@ function App() {
             </div>
 
             <div className="flex justify-end text-xs mt-3">
-              <small className="text-gray-400">v1.3</small>
+              <small className="text-gray-400">v1.31</small>
             </div>
           </div>
         </div>
