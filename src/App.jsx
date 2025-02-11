@@ -39,6 +39,7 @@ function App() {
         autoplay: false,
         animationData: mAnimation,
       });
+      // mAnimationInstance.setSpeed(.25);
   
       aAnimationInstance.current = lottie.loadAnimation({
         container: aAnimationContainer.current,
@@ -47,6 +48,7 @@ function App() {
         autoplay: false,
         animationData: aAnimation,
       });
+      // aAnimationInstance.setSpeed(.25);
   
       cAnimationInstance.current = lottie.loadAnimation({
         container: cAnimationContainer.current,
@@ -55,6 +57,8 @@ function App() {
         autoplay: false,
         animationData: cAnimation,
       });
+      // cAnimationInstance.setSpeed(.25);
+
     } catch (error) {
       console.error("Error parsing Lottie JSON:", error);
     }
@@ -72,7 +76,7 @@ function App() {
     const a = parseFloat(aPercentage) || 0;
     const total = m + c + a;
 
-    if (total > 100) {
+    if (total > 100 || total < 100) {
       setErrorMessage("Total percentage cannot exceed 100%");
       setIsSubmitDisabled(true);
       return false;
@@ -112,13 +116,12 @@ function App() {
   
     let mEndRotation = playAnimation(mAnimationInstance, "mPercentage", 0, (mEndRotation) => {
       setAStartRotation(mEndRotation);
-      console.log("mEndRotation", mEndRotation);
       let aEndRotation = playAnimation(aAnimationInstance, "aPercentage", mEndRotation, (aEndRotation) => {
         setCStartRotation(aEndRotation);
         playAnimation(cAnimationInstance, "cPercentage", aEndRotation);
       });
-      console.log("aEndRotation", aEndRotation);
     });
+    
   };
   
   const resetForm = () => {
@@ -186,13 +189,13 @@ function App() {
 
               <hr className="mt-3 mb-3" />
 
-              {title && <h2 className="content-wrapper--title mb-0">{title}</h2>}
+              {title && <h2 className="text-white content-wrapper--title mb-0">{title}</h2>}
 
-              {mPercentage > 0 && <p className="content-wrapper--stats miriam-bold">{mPercentage}% <span className="miriam-regular">{mLabel}</span></p>}
-              {aPercentage > 0 && <p className="content-wrapper--stats miriam-bold">{aPercentage}% <span className="miriam-regular">{aLabel}</span></p>}
-              {cPercentage > 0 && <p className="content-wrapper--stats miriam-bold">{cPercentage}% <span className="miriam-regular">{cLabel}</span></p>}
+              {mPercentage > 0 && <p className="text-white content-wrapper--stats miriam-bold">{mPercentage}% <span className="miriam-regular">{mLabel}</span></p>}
+              {aPercentage > 0 && <p className="text-white content-wrapper--stats miriam-bold">{aPercentage}% <span className="miriam-regular">{aLabel}</span></p>}
+              {cPercentage > 0 && <p className="text-white content-wrapper--stats miriam-bold">{cPercentage}% <span className="miriam-regular">{cLabel}</span></p>}
 
-              {description && <p className="content-wrapper--description mt-0">{description}</p>}
+              {description && <p className="text-white content-wrapper--description mt-0">{description}</p>}
             </div>
           
           </div>
@@ -328,6 +331,10 @@ function App() {
               <button className="bg-white text-black p-2 mt-5 md:mt-0 miriam-bold" onClick={playAnimations}  disabled={isSubmitDisabled}>Generate</button>
 
               <button className="bg-white text-black p-2 mt-5 md:mt-0 md:ms-3 miriam-bold" onClick={resetForm}>Reset</button>
+            </div>
+
+            <div className="flex justify-end text-xs mt-3">
+              <small className="text-gray-400">v1.01</small>
             </div>
           </div>
         </div>
