@@ -158,7 +158,6 @@ function App() {
         const endRotation = startRotation + (percentage / 100) * totalDegrees;
         
         // Calculate animation speed based on percentage
-        // For smaller percentages, use slower speed
         let speed;
         if (percentage <= 10) {
           speed = 1.0; // Slowest speed for small percentages
@@ -175,7 +174,21 @@ function App() {
         // Calculate frame numbers based on percentage
         const totalFrames = animationInstance.current.totalFrames;
         const endFrame = Math.floor((percentage / 100) * totalFrames);
-        const triggerNextAtFrame = Math.floor(endFrame * 0.6);
+        
+        // Calculate trigger point based on percentage
+        // Larger percentages will wait longer before triggering next animation
+        let triggerPercentage;
+        if (percentage <= 10) {
+          triggerPercentage = 0.5; // Trigger at 50% for small segments
+        } else if (percentage <= 25) {
+          triggerPercentage = 0.6; // Trigger at 60% for medium-small segments
+        } else if (percentage <= 50) {
+          triggerPercentage = 0.7; // Trigger at 70% for medium segments
+        } else {
+          triggerPercentage = 0.8; // Trigger at 80% for large segments
+        }
+        
+        const triggerNextAtFrame = Math.floor(endFrame * triggerPercentage);
         
         const enterFrameHandler = () => {
           if (animationInstance.current.currentFrame >= triggerNextAtFrame) {
